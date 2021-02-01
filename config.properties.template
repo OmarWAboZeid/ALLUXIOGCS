@@ -1,0 +1,5 @@
+PROJECT_ID = incorta-dev-qa
+PATH_TO_JSON_KEY = /home/omar/Downloads/incorta-dev-qa-7d591e4ef472.json
+BUCKET_NAME = sys-1474-gcstesting
+OBJECT_NAME = testGCS/test
+

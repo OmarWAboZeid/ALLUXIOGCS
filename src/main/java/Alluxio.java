@@ -5,10 +5,10 @@ import alluxio.client.file.FileSystem;
 import alluxio.exception.AlluxioException;
 import alluxio.grpc.CreateFilePOptions;
 import alluxio.grpc.WritePType;
-import alluxio.shaded.client.org.reflections.vfs.Vfs;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 /*
 ASYNC_THROUGH
 [Experimental] Write the file asynchronously to the under fs.
@@ -24,19 +24,18 @@ Write the file synchronously to the under fs, skipping com.Alluxio storage.
 public class Alluxio {
     public static void main(String[] args) throws IOException, AlluxioException {
 //        System.out.println("isdnf");
-        AlluxioURI path = new AlluxioURI("alluxio://192.168.42.254:19998/a");
-//        readFile(path);
-        writeFile(path, WritePType.CACHE_THROUGH);
+        AlluxioURI path = new AlluxioURI("alluxio://192.168.1.7:19998/a33");
+        readFile(path);
+//        writeFile(path, WritePType.CACHE_THROUGH);
     }
     public static void readFile(AlluxioURI path) throws IOException, AlluxioException {
         FileSystem fs = FileSystem.Factory.get();
         FileInStream in = fs.openFile(path);
         long startTime = System.currentTimeMillis();
-        in.read();
+        System.out.println(Arrays.toString(in.readAllBytes()));
         long estimatedTime = System.currentTimeMillis() - startTime;
         System.out.println(estimatedTime + " Read time in ms");
-        String s = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-        System.out.println(s);
+//        System.out.println(s);
         in.close();
     }
     public static void writeFile(AlluxioURI path, WritePType writePType) throws IOException, AlluxioException {
@@ -54,3 +53,10 @@ public class Alluxio {
 
     }
 }
+
+
+/* TODOS:
+1.repair read function(readAllBytes())
+2.push to github and clone from the VM
+3.run from VM
+ */

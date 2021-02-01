@@ -6,24 +6,29 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.*;
 
 public class GCS {
     public static void main(String[] args) throws IOException {
-        String PROJECT_ID = "incorta-dev-qa";
-        String PATH_TO_JSON_KEY = "/home/omar/Downloads/incorta-dev-qa-7d591e4ef472.json";
-        String BUCKET_NAME = "sys-1474-gcstesting";
-        String OBJECT_NAME = "testGCS/test";
+//        String PROJECT_ID = "incorta-dev-qa";
+//        String PATH_TO_JSON_KEY = "/home/omar/Downloads/incorta-dev-qa-7d591e4ef472.json";
+//        String BUCKET_NAME = "sys-1474-gcstesting";
+//        String OBJECT_NAME = "testGCS/test";
+        FileReader reader=new FileReader("config.properties");
+
+        Properties p=new Properties();
+        p.load(reader);
         StorageOptions options = StorageOptions.newBuilder()
-                .setProjectId(PROJECT_ID)
+                .setProjectId((String) p.get("PROJECT_ID"))
                 .setCredentials(GoogleCredentials.fromStream(
-                        new FileInputStream(PATH_TO_JSON_KEY))).build();
+                        new FileInputStream((String) p.get("PATH_TO_JSON_KEY")))).build();
 
         Storage storage = options.getService();
-        Blob blob = storage.get(BUCKET_NAME, OBJECT_NAME);
+        Blob blob = storage.get((String) p.get("BUCKET_NAME"), (String) p.get("OBJECT_NAME"));
 
 //        reader(blob);
         writer(blob);
